@@ -42,11 +42,9 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$rootProject.supportlibraries"
     implementation "com.android.support:design:$rootProject.supportlibraries"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout"
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    //butterknife
-    implementation "com.jakewharton:butterknife:$rootProject.ext.butterknife"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknife"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.kotlincoroutines"
 
 
 }

@@ -2,13 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ligtestuff.co.za.kamutils">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera2.full"/>
+
     <application
+            android:hardwareAccelerated="true"
+            android:testOnly="false"
+            android:name=".KamToolsApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".KamScreen">
+        <activity android:name=".mainview.KamScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
