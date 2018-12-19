@@ -14,11 +14,11 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     /**
      * Stores the time of each split.
      */
-    internal var mSplits: ArrayList<Long>? = null
+    private var mSplits: ArrayList<Long>? = null
     /**
      * Stores the labels for each split.
      */
-    internal lateinit var mSplitLabels: ArrayList<String>
+    private lateinit var mSplitLabels: ArrayList<String>
     /**
      * The Log tag to use for checking Log.isLoggable and for
      * logging the timings.
@@ -38,7 +38,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    fun reset(tag: String, label: String, disabled: Boolean) {
+    private fun reset(tag: String, label: String, disabled: Boolean) {
         mTag = tag
         mLabel = label
         mDisabled = disabled
@@ -46,7 +46,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    fun reset() {
+    private fun reset() {
         if (mDisabled) return
         if (mSplits == null) {
             mSplits = ArrayList()
@@ -59,7 +59,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    fun addSplit(splitLabel: String?) {
+    private fun addSplit(splitLabel: String?) {
         if (mDisabled) return
         val now = SystemClock.elapsedRealtime()
         mSplits!!.add(now)

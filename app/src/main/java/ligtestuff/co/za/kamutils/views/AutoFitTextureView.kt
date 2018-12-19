@@ -1,6 +1,7 @@
-package ligtestuff.co.za.kamutils.utils
+package ligtestuff.co.za.kamutils.views
 
 import android.content.Context
+import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.view.TextureView
 
@@ -9,11 +10,15 @@ class AutoFitTextureView : TextureView {
     private var mRatioWidth = 0
     private var mRatioHeight = 0
 
+
+    /*default constructors*/
     constructor(context: Context) : this(context, null)
+
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
     constructor(context: Context, attr: AttributeSet?, defStyle: Int) : super(context, attr, defStyle)
 
 
+    /*Aspect ratio*/
     fun setAspectRatio(width: Int, height: Int) {
         if (width < 0 || height < 0) {
             throw IllegalArgumentException("Size cannot be negative")
@@ -22,7 +27,6 @@ class AutoFitTextureView : TextureView {
         mRatioHeight = height
         requestLayout()
     }
-
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -38,6 +42,33 @@ class AutoFitTextureView : TextureView {
                 setMeasuredDimension(height * mRatioWidth / mRatioHeight, height)
             }
         }
+    }
+
+
+    /*Surface Texture Listner */
+    fun setTextureCallbacks(
+        textureAvailable: (SurfaceTexture?, Int, Int) -> Unit,
+        textureSizeChanged: (SurfaceTexture?, Int, Int) -> Unit = { text, w, h -> /*Do nothing*/ },
+        textureUpdated: (SurfaceTexture?) -> Unit = { text -> /*Do nothing*/ }
+    ) {
+        this.surfaceTextureListener = object : SurfaceTextureListener {
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+                return false
+            }
+
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
+                textureSizeChanged(surface, width, height)
+            }
+
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+                textureUpdated(surface)
+            }
+
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
+                textureAvailable(surface, width, height)
+            }
+        }
+
     }
 
 }
