@@ -2,10 +2,13 @@ package ligtestuff.co.za.kamutils.camera
 
 import android.content.Context
 import android.hardware.camera2.CameraManager
+import android.renderscript.Allocation
+import android.renderscript.RenderScript
 import android.util.DisplayMetrics
 import android.util.Size
 import android.view.Surface
 import android.view.WindowManager
+import ligtestuff.co.za.kamutils.renderscript.RSAllocator
 import ligtestuff.co.za.kamutils.utils.AndroidUtils
 import ligtestuff.co.za.kamutils.utils.logd
 import ligtestuff.co.za.kamutils.views.AutoFitTextureView
@@ -24,7 +27,7 @@ class CameraHelper(private val ctx: Context, private val textView: AutoFitTextur
         manager = ctx.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         numCams = manager.cameraIdList.size
         camID = manager.cameraIdList[camSelection]
-        textView.setTextureCallbacks({ tView, w, h -> startCamera() })
+        textView.setTextureCallbacks({ _, _, _ -> startCamera() })
     }
 
     fun onResume() {
@@ -43,16 +46,32 @@ class CameraHelper(private val ctx: Context, private val textView: AutoFitTextur
     private fun startCamera() {
         logd("Start Camera")
         if (!AndroidUtils.checkCameraPermissions(ctx)) return //lets just make sure camera permissions are granted
-        val surface = Surface(textView.surfaceTexture) //temporary surface
-
         //chain calls to create camera, initialize Capture session and start preview capture
-        phoneCam = CameraInstance(manager, camID, getTargetCameraSize(ctx), surface) {
-            phoneCam?.createCaptureSession { success ->
+        phoneCam = CameraInstance(manager, camID, getTargetCameraSize(ctx)) {
+
+            val surface = getSurface(phoneCam!!.captureSize) //definitely not null here
+            phoneCam?.createCaptureSession (surface) { success ->
                 if (success) {
-                    phoneCam?.startPreviewCapture()
+                    phoneCam?.startPreviewCapture(surface)
                 }
             }
         }
+    }
+
+    /*Getting it to work before i refactor*/
+    private fun getSurface(size: Size): Surface {
+        val rs: RenderScript = RenderScript.create(ctx, RenderScript.ContextType.NORMAL)
+        val allocation: Allocation = RSAllocator.createRenderscriptAllocation(rs, size)
+        allocation.setOnBufferAvailableListener { it ->
+            logd("Received Camera Image")
+           if (it != null && (it.usage and Allocation.USAGE_IO_INPUT != 0)) {
+               it.ioReceive()
+            }
+        }
+
+        return allocation.surface
+
+        //return Surface(textView.surfaceTexture) //temporary surface
     }
 
     private fun closeCamera() {

@@ -14,7 +14,6 @@ internal class CameraInstance(
     cameraManager: CameraManager,
     camID: String,
     camPictureSize: Size,
-    private val surface: Surface,
     cameraDisconnected: () -> Unit = {},
     cameraError: (Int) -> Unit = {},
     cameraOpened: (CameraDevice?) -> Unit = {}
@@ -57,7 +56,7 @@ internal class CameraInstance(
 
     private fun isCameraOpened() = camera != null
 
-    fun createCaptureSession(configured: (Boolean) -> Unit) {
+    fun createCaptureSession(surface: Surface, configured: (Boolean) -> Unit) {
         if (isCameraOpened()) configured(false)
 
         camera!!.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
@@ -75,7 +74,7 @@ internal class CameraInstance(
         }, null)
     }
 
-    fun startPreviewCapture(): Boolean {
+    fun startPreviewCapture(surface: Surface): Boolean {
         if (camera == null || captureSession == null) return false
 
         val repeatingRequest = camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
