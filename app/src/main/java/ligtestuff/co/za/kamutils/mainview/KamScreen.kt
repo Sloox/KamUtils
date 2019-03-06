@@ -14,7 +14,7 @@ class KamScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kam_screen)
-        cameraManager = CameraHelper(this, this::handleBitmap)
+        cameraManager = CameraHelper(this, bitmapCallback = this::handleBitmap)
     }
 
     override fun onResume() {
@@ -25,7 +25,7 @@ class KamScreen : AppCompatActivity() {
         }
     }
 
-    fun handleBitmap(pb: Bitmap) {
+    private fun handleBitmap(pb: Bitmap) {
         cameraView.processedCameraBitmap = pb
         cameraView.invalidate()
     }

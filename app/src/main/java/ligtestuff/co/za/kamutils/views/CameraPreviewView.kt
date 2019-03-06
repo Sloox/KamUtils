@@ -19,8 +19,11 @@ class CameraPreviewView(context: Context, attrs: AttributeSet) : View(context, a
     }
 
     override fun onDraw(canvas: Canvas?) {
-        if (processedCameraBitmap != null && canvas != null) {
+        if (processedCameraBitmap != null && !processedCameraBitmap!!.isRecycled && canvas != null) {
+            canvas.save()
+            canvas.rotate(90F)
             canvas.drawBitmap(processedCameraBitmap, null, canvas.clipBounds, blackPaint)
+            canvas.restore()
             drawText(canvas, "" + 1000 / (SystemClock.elapsedRealtime() - oldTime))
             oldTime = SystemClock.elapsedRealtime()
         } else {
