@@ -5,8 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import ligtestuff.co.za.kamutils.BuildConfig
 
-fun Any.logd(txt: String, t: String = this::class.java.simpleName) { //internal debug logging
-    if (BuildConfig.DEBUG) {
+fun Any.logd(txt: String, enabled: Boolean = true, t: String = this::class.java.simpleName) { //internal debug logging
+    if (BuildConfig.DEBUG && enabled) {
         Log.d(t, txt)
     }
 }

@@ -6,8 +6,12 @@
         android:layout_height="match_parent"
         tools:context=".mainview.KamScreen">
 
-    <ligtestuff.co.za.kamutils.views.AutoFitTextureView android:layout_width="match_parent"
-                                                        android:layout_height="match_parent"
-                                                        android:id="@+id/cameraView"/>
+    <!-- <ligtestuff.co.za.kamutils.views.AutoFitTextureView android:layout_width="match_parent"
+                                                         android:layout_height="match_parent"
+                                                         android:id="@+id/cameraView"/>-->
+
+    <ligtestuff.co.za.kamutils.views.CameraPreviewView android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:id="@+id/cameraView"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -38,7 +38,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    private fun reset(tag: String, label: String, disabled: Boolean) {
+    fun reset(tag: String, label: String, disabled: Boolean) {
         mTag = tag
         mLabel = label
         mDisabled = disabled
@@ -46,7 +46,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    private fun reset() {
+    fun reset() {
         if (mDisabled) return
         if (mSplits == null) {
             mSplits = ArrayList()
@@ -59,7 +59,7 @@ internal class WorkLogger(tag: String, label: String, disabled: Boolean) {
     }
 
 
-    private fun addSplit(splitLabel: String?) {
+    fun addSplit(splitLabel: String?) {
         if (mDisabled) return
         val now = SystemClock.elapsedRealtime()
         mSplits!!.add(now)

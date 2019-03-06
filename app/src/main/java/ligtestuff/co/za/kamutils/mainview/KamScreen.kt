@@ -1,5 +1,6 @@
 package ligtestuff.co.za.kamutils.mainview
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_kam_screen.*
@@ -13,7 +14,7 @@ class KamScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kam_screen)
-        cameraManager = CameraHelper(this, cameraView)
+        cameraManager = CameraHelper(this, this::handleBitmap)
     }
 
     override fun onResume() {
@@ -22,6 +23,11 @@ class KamScreen : AppCompatActivity() {
             //checks permissions & will open camera
             cameraManager.onResume()
         }
+    }
+
+    fun handleBitmap(pb: Bitmap) {
+        cameraView.processedCameraBitmap = pb
+        cameraView.invalidate()
     }
 
     override fun onPause() {

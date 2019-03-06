@@ -1,10 +1,12 @@
 package ligtestuff.co.za.kamutils.views
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.view.TextureView
 
+@Deprecated(message = "Not used anymore infavour of PreviewView")
 class AutoFitTextureView : TextureView {
 
     private var mRatioWidth = 0
@@ -42,6 +44,10 @@ class AutoFitTextureView : TextureView {
                 setMeasuredDimension(height * mRatioWidth / mRatioHeight, height)
             }
         }
+    }
+
+    override fun onDrawForeground(canvas: Canvas?) {
+        super.onDrawForeground(canvas)
     }
 
 

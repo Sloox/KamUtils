@@ -76,11 +76,9 @@ internal class CameraInstance(
 
     fun startPreviewCapture(surface: Surface): Boolean {
         if (camera == null || captureSession == null) return false
-
         val repeatingRequest = camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         repeatingRequest.addTarget(surface)
-
-        captureSession!!.setRepeatingRequest(repeatingRequest.build(), null, null)
+        captureSession?.setRepeatingRequest(repeatingRequest.build(), null, null) ?: return false
         return true
     }
 
